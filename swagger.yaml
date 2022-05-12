@@ -75,6 +75,68 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MessageResponse'
+  /cek-saldo:
+    get:
+      summary: Cek Saldo
+      operationId: cek_saldo_cek_saldo_get
+      parameters:
+        - description: Bearer token that contains the access token. Must be in 'Bearer ...' format
+          required: false
+          schema:
+            title: Authentication
+            description: Bearer token that contains the access token. Must be in 'Bearer ...' format
+          name: authentication
+          in: header
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SaldoResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /riwayat-transaksi:
+    get:
+      summary: Riwayat Transaksi
+      operationId: riwayat_transaksi_riwayat_transaksi_get
+      parameters:
+        - description: Bearer token that contains the access token. Must be in 'Bearer ...' format
+          required: false
+          schema:
+            title: Authentication
+            description: Bearer token that contains the access token. Must be in 'Bearer ...' format
+          name: authentication
+          in: header
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RiwayatTransaksiResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
     LoginCredentialsRequest:
@@ -149,4 +211,74 @@ components:
           type: boolean
         username:
           title: Username
+          type: string
+    RiwayatTransaksiResponse:
+      title: RiwayatTransaksiResponse
+      required:
+        - success
+        - username
+        - riwayat
+      type: object
+      properties:
+        success:
+          title: Success
+          type: boolean
+        username:
+          title: Username
+          type: string
+        riwayat:
+          title: Riwayat
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaksi'
+    SaldoResponse:
+      title: SaldoResponse
+      required:
+        - success
+        - username
+        - saldo
+        - no_rekening
+      type: object
+      properties:
+        success:
+          title: Success
+          type: boolean
+        username:
+          title: Username
+          type: string
+        saldo:
+          title: Saldo
+          type: string
+        no_rekening:
+          title: No Rekening
+          type: string
+    Transaksi:
+      title: Transaksi
+      required:
+        - id_transaksi
+        - keterangan
+        - waktu
+        - nominal
+        - status
+        - tipe
+      type: object
+      properties:
+        id_transaksi:
+          title: Id Transaksi
+          type: string
+        keterangan:
+          title: Keterangan
+          type: string
+        waktu:
+          title: Waktu
+          type: string
+          format: date-time
+        nominal:
+          title: Nominal
+          type: string
+        status:
+          title: Status
+          type: string
+        tipe:
+          title: Tipe
           type: string
