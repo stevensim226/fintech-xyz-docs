@@ -75,6 +75,168 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MessageResponse'
+  /cek-saldo:
+    get:
+      summary: Cek Saldo
+      operationId: cek_saldo_cek_saldo_get
+      parameters:
+        - description: Bearer token that contains the access token. Must be in 'Bearer ...' format
+          required: false
+          schema:
+            title: Authentication
+            description: Bearer token that contains the access token. Must be in 'Bearer ...' format
+          name: authentication
+          in: header
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SaldoResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+  /riwayat-transaksi:
+    get:
+      summary: Riwayat Transaksi
+      operationId: riwayat_transaksi_riwayat_transaksi_get
+      parameters:
+        - description: Bearer token that contains the access token. Must be in 'Bearer ...' format
+          required: false
+          schema:
+            title: Authentication
+            description: Bearer token that contains the access token. Must be in 'Bearer ...' format
+          name: authentication
+          in: header
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RiwayatTransaksiResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+  /payment-link/create:
+    post:
+      summary: Create Payment Link
+      operationId: create-payment-link_create-payment-link_post
+      parameters:
+        - name: authentication
+          in: header
+          required: false
+          description: Bearer token that contains the access token. Must be in 'Bearer ...' format
+          schema:
+            title: Authentication
+            description: Bearer token that contains the access token. Must be in 'Bearer ...' format
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePaymentLinkRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatePaymentLinkResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+  /payment-link/{code}:
+    get:
+      summary: Get Payment Link
+      operationId: get-payment-link_get-payment-link_get
+      parameters:
+        - name: authentication
+          in: header
+          required: false
+          description: Bearer token that contains the access token. Must be in 'Bearer ...' format
+          schema:
+            title: Authentication
+            description: Bearer token that contains the access token. Must be in 'Bearer ...' format
+        - name: code
+          in: path
+          required: true
+          description: Payment Link Code
+          schema:
+            title: Code
+            type : string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPaymentLinkResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+  /payment-link/pay:
+    post:
+      summary: Pay Payment Link
+      operationId: pay-payment-link_pay-payment-link_post
+      parameters:
+        - name: authentication
+          in: header
+          required: false
+          description: Bearer token that contains the access token. Must be in 'Bearer ...' format
+          schema:
+            title: Authentication
+            description: Bearer token that contains the access token. Must be in 'Bearer ...' format
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PayPaymentLinkRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayPaymentLinkResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
   /transfer/instant:
     post:
       summary: Instant Transfer
@@ -271,6 +433,141 @@ components:
         username:
           title: Username
           type: string
+    RiwayatTransaksiResponse:
+      title: RiwayatTransaksiResponse
+      required:
+        - success
+        - username
+        - riwayat
+      type: object
+      properties:
+        success:
+          title: Success
+          type: boolean
+        username:
+          title: Username
+          type: string
+        riwayat:
+          title: Riwayat
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaksi'
+    SaldoResponse:
+      title: SaldoResponse
+      required:
+        - success
+        - username
+        - saldo
+        - no_rekening
+      type: object
+      properties:
+        success:
+          title: Success
+          type: boolean
+        username:
+          title: Username
+          type: string
+        saldo:
+          title: Saldo
+          type: string
+        no_rekening:
+          title: No Rekening
+          type: string
+    Transaksi:
+      title: Transaksi
+      required:
+        - id_transaksi
+        - keterangan
+        - waktu
+        - nominal
+        - status
+        - tipe
+      type: object
+      properties:
+        id_transaksi:
+          title: Id Transaksi
+          type: string
+        keterangan:
+          title: Keterangan
+          type: string
+        waktu:
+          title: Waktu
+          type: string
+          format: date-time
+        nominal:
+          title: Nominal
+          type: string
+        status:
+          title: Status
+          type: string
+        tipe:
+          title: Tipe
+          type: string
+    CreatePaymentLinkRequest:
+      title: CreatePaymentLinkRequest
+      required:
+        - nominal
+      type: object
+      properties:
+        nominal:
+          title: Nominal
+          type: integer
+    CreatePaymentLinkResponse:
+      title: CreatePaymentLinkResponse
+      required:
+        - success
+        - link
+        - nominal
+      type: object
+      properties:
+        success:
+          title: Success
+          type: boolean
+        nominal:
+          title: Nominal
+          type: integer
+        link:
+          title: Link
+          type: string
+    GetPaymentLinkResponse:
+      title: GetPaymentLinkResponse
+      required:
+        - success
+        - code
+        - nominal
+      type: object
+      properties:
+        success:
+          title: Success
+          type: boolean
+        code:
+          title: Code
+          type: string
+        nominal:
+          title: Nominal
+          type: integer
+    PayPaymentLinkRequest:
+      title: PayPaymentLinkRequest
+      required:
+        - code
+      type: object
+      properties:
+        code:
+          title: Code
+          type: string
+    PayPaymentLinkResponse:
+      title: PayPaymentLinkResponse
+      required:
+        - success
+        - message
+      type: object
+      properties:
+        success:
+          title: Success
+          type: boolean
+        message:
+          title: Message
+          type: string 
     InstantTransferRequest:
       title: InstantTransferRequest
       required:
