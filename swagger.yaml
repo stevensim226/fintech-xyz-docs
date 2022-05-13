@@ -75,6 +75,115 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MessageResponse'
+  /transfer/instant:
+    post:
+      summary: Instant Transfer
+      operationId: instant_transfer_transfer_instant_post
+      parameters:
+        - description: Bearer token that contains the access token. Must be in 'Bearer ...' format
+          required: false
+          schema:
+            title: Authentication
+            description: Bearer token that contains the access token. Must be in 'Bearer ...' format
+          name: authentication
+          in: header
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InstantTransferRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstantTransferResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+  /transfer/scheduled:
+    post:
+      summary: Scheduled Transfer
+      operationId: scheduled_transfer_transfer_scheduled_post
+      parameters:
+        - description: Bearer token that contains the access token. Must be in 'Bearer ...' format
+          required: false
+          schema:
+            title: Authentication
+            description: Bearer token that contains the access token. Must be in 'Bearer ...' format
+          name: authentication
+          in: header
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduledTransferRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduledTransferResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+  /transfer/check-target:
+    post:
+      summary: Check Target
+      operationId: check_target_transfer_check_target_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TargetCheckRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TargetCheckResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
 components:
   schemas:
     LoginCredentialsRequest:
@@ -149,4 +258,102 @@ components:
           type: boolean
         username:
           title: Username
+          type: string
+    InstantTransferRequest:
+      title: InstantTransferRequest
+      required:
+        - access_token
+        - target_account
+        - nominal
+      type: object
+      properties:
+        access_token:
+          title: Access Token
+          type: string
+        target_account:
+          title: Target Account
+          type: string
+        nominal:
+          title: Nominal
+          type: integer
+    InstantTransferResponse:
+      title: InstantTransferResponse
+      required:
+        - target_account
+        - target_name
+        - time
+      type: object
+      properties:
+        target_account:
+          title: Target Account
+          type: string
+        target_name:
+          title: Target Name
+          type: string
+        time:
+          title: Time
+          type: string
+    ScheduledTransferRequest:
+      title: ScheduledTransferRequest
+      required:
+        - access_token
+        - target_account
+        - nominal
+        - schedule
+      type: object
+      properties:
+        access_token:
+          title: Access Token
+          type: string
+        target_account:
+          title: Target Account
+          type: string
+        nominal:
+          title: Nominal
+          type: string
+        schedule:
+          title: Schedule
+          type: string
+    ScheduledTransferResponse:
+      title: ScheduledTransferResponse
+      required:
+        - target_account
+        - target_name
+        - request_time
+        - transfer_time
+      type: object
+      properties:
+        target_account:
+          title: Target Account
+          type: string
+        target_name:
+          title: Target Name
+          type: string
+        request_time:
+          title: Request Time
+          type: string
+        transfer_time:
+          title: Transfer Time
+          type: string
+    TargetCheckRequest:
+      title: TargetCheckRequest
+      required:
+        - target_account
+      type: object
+      properties:
+        target_account:
+          title: Target Account
+          type: string
+    TargetCheckResponse:
+      title: TargetCheckResponse
+      required:
+        - target_account
+        - target_name
+      type: object
+      properties:
+        target_account:
+          title: Target Account
+          type: string
+        target_name:
+          title: Target Name
           type: string
