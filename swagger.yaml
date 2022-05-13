@@ -100,6 +100,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InstantTransferResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
         '401':
           description: Unauthorized
           content:
@@ -137,6 +143,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ScheduledTransferResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
         '401':
           description: Unauthorized
           content:
@@ -262,14 +274,10 @@ components:
     InstantTransferRequest:
       title: InstantTransferRequest
       required:
-        - access_token
         - target_account
         - nominal
       type: object
       properties:
-        access_token:
-          title: Access Token
-          type: string
         target_account:
           title: Target Account
           type: string
@@ -296,15 +304,11 @@ components:
     ScheduledTransferRequest:
       title: ScheduledTransferRequest
       required:
-        - access_token
         - target_account
         - nominal
         - schedule
       type: object
       properties:
-        access_token:
-          title: Access Token
-          type: string
         target_account:
           title: Target Account
           type: string
