@@ -112,7 +112,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MessageResponse'
-  /payment-link/{link}:
+  /payment-link/{code}:
     get:
       summary: Get Payment Link
       operationId: get-payment-link_get-payment-link_get
@@ -124,12 +124,12 @@ paths:
           schema:
             title: Authentication
             description: Bearer token that contains the access token. Must be in 'Bearer ...' format
-        - name: link
+        - name: code
           in: path
           required: true
-          description: Payment Link URL
+          description: Payment Link Code
           schema:
-            title: Link
+            title: Code
             type : string
       responses:
         '200':
@@ -275,10 +275,14 @@ components:
     CreatePaymentLinkResponse:
       title: CreatePaymentLinkResponse
       required:
+        - success
         - link
         - nominal
       type: object
       properties:
+        success:
+          title: Success
+          type: boolean
         nominal:
           title: Nominal
           type: integer
@@ -288,10 +292,14 @@ components:
     GetPaymentLinkResponse:
       title: GetPaymentLinkResponse
       required:
+        - success
         - code
         - nominal
       type: object
       properties:
+        success:
+          title: Success
+          type: boolean
         code:
           title: Code
           type: string
@@ -301,18 +309,22 @@ components:
     PayPaymentLinkRequest:
       title: PayPaymentLinkRequest
       required:
-        - link
+        - code
       type: object
       properties:
-        link:
-          title: Link
+        code:
+          title: Code
           type: string
     PayPaymentLinkResponse:
       title: PayPaymentLinkResponse
       required:
+        - success
         - message
       type: object
       properties:
+        success:
+          title: Success
+          type: boolean
         message:
           title: Message
           type: string
