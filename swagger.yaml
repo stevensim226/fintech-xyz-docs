@@ -358,6 +358,43 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MessageResponse'
+  /topup:
+    post:
+      summary: Topup
+      operationId: topup_topup_post
+      parameters:
+        - description: Bearer token that contains the access token. Must be in 'Bearer ...' format
+          required: false
+          schema:
+            title: Authentication
+            description: Bearer token that contains the access token. Must be in 'Bearer ...' format
+          name: authentication
+          in: header
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TopupRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TopupResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TopupResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
     LoginCredentialsRequest:
@@ -657,4 +694,56 @@ components:
           type: string
         target_name:
           title: Target Name
+          type: string
+    HTTPValidationError:
+      title: HTTPValidationError
+      type: object
+      properties:
+        detail:
+          title: Detail
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+    TopupRequest:
+      title: TopupRequest
+      required:
+        - amount
+      type: object
+      properties:
+        amount:
+          title: Amount
+          type: integer
+    TopupResponse:
+      title: TopupResponse
+      required:
+        - success
+        - message
+      type: object
+      properties:
+        success:
+          title: Success
+          type: boolean
+        message:
+          title: Message
+          type: string
+    ValidationError:
+      title: ValidationError
+      required:
+        - loc
+        - msg
+        - type
+      type: object
+      properties:
+        loc:
+          title: Location
+          type: array
+          items:
+            anyOf:
+              - type: string
+              - type: integer
+        msg:
+          title: Message
+          type: string
+        type:
+          title: Error Type
           type: string
