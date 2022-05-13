@@ -100,12 +100,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MessageResponse'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
   /riwayat-transaksi:
     get:
       summary: Riwayat Transaksi
@@ -131,12 +125,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MessageResponse'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
     LoginCredentialsRequest:
